@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="cyberpunk">
+<head>
+<meta charset="utf-8">
+<title>DASHPUNK</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="theme-chrome" aria-hidden="true"></div>
+<div id="ambient" aria-hidden="true"></div>
+<div id="crt"></div>
+
+<nav id="rail">
+  <button class="rail-btn on" id="rail-dash" data-page="0">
+    <span class="rail-ico">&#9638;</span><span class="rail-lbl">DASH</span>
+  </button>
+  <button class="rail-btn" id="rail-msg" data-page="1">
+    <span class="rail-ico">&#9993;</span><span class="rail-lbl">MSGS</span>
+    <span class="rail-badge" id="rail-badge" hidden>0</span>
+  </button>
+  <button class="rail-btn" id="rail-world" data-page="2">
+    <span class="rail-ico">&#8853;</span><span class="rail-lbl">WORLD</span>
+  </button>
+  <button class="rail-btn" id="rail-apps" data-page="3">
+    <span class="rail-ico">&#8862;</span><span class="rail-lbl">APPS</span>
+  </button>
+  <button class="rail-btn" id="rail-viz" data-page="4">
+    <span class="rail-ico">&#9835;</span><span class="rail-lbl">VIZ</span>
+  </button>
+  <button class="rail-btn" id="rail-tasks" data-page="5">
+    <span class="rail-ico">&#9745;</span><span class="rail-lbl">TASKS</span>
+  </button>
+</nav>
+
+<div id="content">
+<header>
+  <div id="clock-block">
+    <div id="clock">--:--:--</div>
+    <div id="date">·</div>
+  </div>
+  <div id="ident">
+    <div id="hostname">////</div>
+    <div id="sysline">initializing…</div>
+  </div>
+  <div id="next-meeting" hidden>
+    <div class="nm-label">NEXT MEETING</div>
+    <div class="nm-title">—</div>
+    <div class="nm-when">—</div>
+  </div>
+  <div id="actions">
+    <button class="act" id="act-lock" data-action="lock">
+      <span class="act-ico">&#9919;</span><span class="act-lbl">LOCK</span>
+    </button>
+    <button class="act" id="act-dnd" data-action="dnd">
+      <span class="act-ico">&#9711;</span><span class="act-lbl">DND</span>
+    </button>
+    <button class="act" id="act-awake" data-action="awake">
+      <span class="act-ico">&#9788;</span><span class="act-lbl">AWAKE</span>
+    </button>
+    <button class="act" id="act-logout" data-action="logout">
+      <span class="act-ico">&#8618;</span><span class="act-lbl">LOGOUT</span>
+    </button>
+    <button class="act" id="act-theme">
+      <span class="act-ico">&#9680;</span><span class="act-lbl">CYBER</span>
+    </button>
+    <span id="actions-custom"></span>
+  </div>
+</header>
+
+<div id="pages">
+<main class="page" id="page-dash">
+  <!-- ══════════ SYSTEM ══════════ -->
+  <section class="panel" id="panel-system">
+    <h2>SYSTEM</h2>
+    <div class="bigrow">
+      <div class="bigstat">
+        <div class="bigval" id="cpu-pct">--<small>%</small></div>
+        <div class="biglbl">CPU LOAD</div>
+      </div>
+      <canvas class="spark" id="cpu-spark"></canvas>
+    </div>
+    <div id="cores"></div>
+    <div class="meta">
+      <div class="kv"><span class="k">TEMP</span><span class="v" id="cpu-temp">--</span></div>
+      <div class="kv"><span class="k">FREQ</span><span class="v" id="cpu-freq">--</span></div>
+      <div class="kv"><span class="k">LOAD</span><span class="v" id="cpu-load">--</span></div>
+      <div class="kv" id="fan-kv" hidden><span class="k">FAN</span><span class="v" id="fan-rpm">--</span></div>
+    </div>
+    <div class="bar-group">
+      <div class="bar-row">
+        <span class="bar-lbl">MEM</span>
+        <div class="bar"><div class="bar-fill" id="mem-bar"></div></div>
+        <span class="bar-val" id="mem-val">--</span>
+      </div>
+      <div class="bar-row thin" id="swap-row">
+        <span class="bar-lbl">SWP</span>
+        <div class="bar"><div class="bar-fill" id="swap-bar"></div></div>
+        <span class="bar-val" id="swap-val">--</span>
+      </div>
+      <div id="disks"></div>
+    </div>
+  </section>
+
+  <!-- ══════════ GPU ══════════ -->
+  <section class="panel" id="panel-gpu">
+    <h2>GPU · RADEON</h2>
+    <div class="bigrow">
+      <div class="bigstat">
+        <div class="bigval" id="gpu-pct">--<small>%</small></div>
+        <div class="biglbl">GPU LOAD</div>
+      </div>
+      <canvas class="spark" id="gpu-spark"></canvas>
+    </div>
+    <div class="meta">
+      <div class="kv"><span class="k">TEMP</span><span class="v" id="gpu-temp">--</span></div>
+      <div class="kv"><span class="k">PWR</span><span class="v" id="gpu-pwr">--</span></div>
+      <div class="kv"><span class="k">CLK</span><span class="v" id="gpu-freq">--</span></div>
+    </div>
+    <div class="bar-group">
+      <div class="bar-row">
+        <span class="bar-lbl">VRAM</span>
+        <div class="bar"><div class="bar-fill" id="vram-bar"></div></div>
+        <span class="bar-val" id="vram-val">--</span>
+      </div>
+    </div>
+    <div class="nvme-line">
+      <span class="k">NVME</span><span class="v" id="nvme-temp">--</span>
+    </div>
+  </section>
+
+  <!-- ══════════ AUDIO ══════════ -->
+  <section class="panel" id="panel-audio">
+    <h2>AUDIO</h2>
+    <div class="sub">OUTPUT</div>
+    <div class="devlist" id="sinks"></div>
+    <div class="vol-row">
+      <button class="mute-btn" id="sink-mute"><svg viewBox="0 0 24 24" width="24" height="24"><path fill="currentColor" d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 8v8a4.5 4.5 0 0 0 2.5-4zM14 3.2v2.1c2.9.9 5 3.5 5 6.7s-2.1 5.8-5 6.7v2.1c4-.9 7-4.5 7-8.8s-3-7.9-7-8.8z"/></svg></button>
+      <div class="slider" id="vol-slider">
+        <div class="slider-fill"></div>
+        <div class="slider-thumb"></div>
+      </div>
+      <span class="vol-pct" id="vol-pct">--</span>
+    </div>
+    <div class="sub">INPUT</div>
+    <div class="mic-row">
+      <button class="mic-btn" id="mic-mute">
+        <svg viewBox="0 0 24 24" width="34" height="34"><path fill="currentColor" d="M12 14a3 3 0 0 0 3-3V5a3 3 0 0 0-6 0v6a3 3 0 0 0 3 3zm5-3a5 5 0 0 1-10 0H5a7 7 0 0 0 6 6.92V21h2v-3.08A7 7 0 0 0 19 11h-2z"/></svg>
+      </button>
+      <div class="mic-info">
+        <div class="mic-name" id="mic-name">no input device</div>
+        <div class="mic-state" id="mic-state">--</div>
+      </div>
+    </div>
+    <div class="devlist small" id="sources"></div>
+  </section>
+
+  <!-- ══════════ MEDIA ══════════ -->
+  <section class="panel" id="panel-media">
+    <h2>MEDIA</h2>
+    <div id="media-body">
+      <div id="media-top">
+        <div id="art-frame">
+          <img id="art" alt="">
+          <div id="art-idle">NO<br>SIGNAL</div>
+        </div>
+        <div id="track">
+          <div id="track-title">—</div>
+          <div id="track-artist"></div>
+          <div id="track-album"></div>
+          <div id="track-player"></div>
+        </div>
+      </div>
+      <div id="media-progress">
+        <span id="pos">0:00</span>
+        <div class="bar thin"><div class="bar-fill" id="prog-bar"></div></div>
+        <span id="len">0:00</span>
+      </div>
+      <div id="media-controls">
+        <button class="mbtn" id="m-prev"><svg viewBox="0 0 24 24" width="24" height="24"><path fill="currentColor" d="M6 6h2v12H6zM18 6v12l-8.5-6z"/></svg></button>
+        <button class="mbtn big" id="m-play"><svg viewBox="0 0 24 24" width="26" height="26"><path fill="currentColor" d="M8 5v14l11-7z"/></svg></button>
+        <button class="mbtn" id="m-next"><svg viewBox="0 0 24 24" width="24" height="24"><path fill="currentColor" d="M16 6h2v12h-2zM6 6l8.5 6L6 18z"/></svg></button>
+        <button class="mbtn heart" id="m-like" hidden></button>
+      </div>
+      <div id="radio-controls" hidden>
+        <button class="mbtn" id="r-pause"><svg viewBox="0 0 24 24" width="26" height="26"><path fill="currentColor" d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg></button>
+        <button class="launch-btn stop" id="r-stop"><svg viewBox="0 0 24 24" width="20" height="20"><path fill="currentColor" d="M7 7h10v10H7z"/></svg> STOP RADIO</button>
+      </div>
+      <div id="m-launchers" hidden></div>
+    </div>
+  </section>
+
+  <!-- ══════════ NETWORK ══════════ -->
+  <section class="panel" id="panel-net">
+    <h2>NETWORK</h2>
+    <div id="ifaces"></div>
+    <canvas id="net-spark"></canvas>
+    <div class="net-legend">
+      <span class="lg rx">&#9660; RX</span><span class="lg tx">&#9650; TX</span>
+    </div>
+    <div class="sub">LINK QUALITY</div>
+    <div id="pings"></div>
+  </section>
+</main>
+
+<!-- ══════════ PAGE 2: NOTIFICATIONS + AGENDA ══════════ -->
+<main class="page" id="page-notif">
+  <div id="notif-cols"></div>
+  <section class="ncol" id="agenda" hidden>
+    <div class="ncol-head">
+      <span class="ncol-label">AGENDA</span>
+      <span class="ncol-count zero" id="ag-count">0</span>
+      <span class="spacer"></span>
+      <span class="ag-status" id="ag-status"></span>
+    </div>
+    <div class="nlist" id="ag-list"></div>
+    <div class="nempty" id="ag-empty">NO UPCOMING<br>MEETINGS</div>
+  </section>
+</main>
+
+<!-- ══════════ PAGE 3: WORLD CLOCKS ══════════ -->
+<main class="page" id="page-world"></main>
+
+<!-- ══════════ PAGE 4: APP LAUNCHER ══════════ -->
+<main class="page" id="page-apps"></main>
+
+<!-- ══════════ PAGE 5: AUDIO VISUALIZER ══════════ -->
+<main class="page" id="page-viz">
+  <canvas id="viz-canvas"></canvas>
+  <div id="viz-hud">
+    <div id="viz-media" hidden>
+      <img id="viz-art" alt="">
+      <div id="viz-track">
+        <div id="viz-title"></div>
+        <div id="viz-artist"></div>
+      </div>
+    </div>
+    <div id="viz-controls" hidden>
+      <button class="mbtn" id="v-prev"><svg viewBox="0 0 24 24" width="22" height="22"><path fill="currentColor" d="M6 6h2v12H6zM18 6v12l-8.5-6z"/></svg></button>
+      <button class="mbtn" id="v-play"><svg viewBox="0 0 24 24" width="24" height="24"><path fill="currentColor" d="M8 5v14l11-7z"/></svg></button>
+      <button class="mbtn" id="v-next"><svg viewBox="0 0 24 24" width="22" height="22"><path fill="currentColor" d="M16 6h2v12h-2zM6 6l8.5 6L6 18z"/></svg></button>
+      <button class="mbtn heart" id="v-like" hidden></button>
+    </div>
+  </div>
+  <div id="viz-mode-lbl">SPECTRUM</div>
+  <div id="viz-flash" hidden></div>
+</main>
+
+<!-- ══════════ PAGE 6: TASKWARRIOR ══════════ -->
+<main class="page" id="page-tasks">
+  <section class="panel">
+    <h2>TASKS <span class="ag-status" id="task-status"></span></h2>
+    <div id="task-chips"></div>
+    <div class="tlist" id="task-list"></div>
+    <div class="nempty" id="task-empty" hidden>NO PENDING<br>TASKS</div>
+  </section>
+</main>
+</div><!-- /pages -->
+</div><!-- /content -->
+
+<script src="app.js"></script>
+<script src="viz.js"></script>
+</body>
+</html>

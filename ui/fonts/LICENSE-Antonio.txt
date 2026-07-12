@@ -1,0 +1,8 @@
+Antonio (Antonio-700.woff2, latin subset)
+Copyright 2020 The Antonio Project Authors (https://github.com/vernnobile/antonioFont)
+
+This Font Software is licensed under the SIL Open Font License, Version 1.1.
+The full license text is available at: https://openfontlicense.org
+
+Bundled for Dashpunk's LCARS theme. The other bundled fonts (Orbitron,
+Rajdhani, Share Tech Mono) are likewise licensed under the SIL OFL 1.1.

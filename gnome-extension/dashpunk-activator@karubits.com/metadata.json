@@ -1,0 +1,7 @@
+{
+  "uuid": "dashpunk-activator@karubits.com",
+  "name": "Dashpunk Window Activator",
+  "description": "D-Bus service that lets Dashpunk (the Xeneon Edge cyberdeck) bring app windows to focus (works around focus-stealing prevention for its app launcher).",
+  "shell-version": ["48", "49", "50"],
+  "url": "https://github.com/karubits/dashpunk"
+}

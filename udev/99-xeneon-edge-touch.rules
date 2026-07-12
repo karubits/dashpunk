@@ -1,0 +1,9 @@
+# Corsair Xeneon Edge — wch.cn touch controller (27c0:0859)
+#
+# The controller exposes two HID interfaces: a true touchscreen and a legacy
+# absolute-mouse emulation. Desktops that pick up the mouse interface treat
+# touches as pointer input (no flicks, no drags, no multitouch).
+# This rule hides the mouse-emulation interface from libinput so touches are
+# delivered as real touchscreen events only.
+
+SUBSYSTEM=="input", KERNEL=="event*", ATTRS{idVendor}=="27c0", ATTRS{idProduct}=="0859", ENV{ID_INPUT_MOUSE}=="1", ENV{LIBINPUT_IGNORE_DEVICE}="1", ENV{ID_INPUT_MOUSE}=""

@@ -1,0 +1,168 @@
+# Dashpunk — example configuration
+#
+# Copy this to ~/.config/dashpunk/config.toml and edit to taste:
+#   mkdir -p ~/.config/dashpunk
+#   cp config.example.toml ~/.config/dashpunk/config.toml
+#
+# (The app also writes a commented default here on first run if none exists.)
+#
+# SECRETS: the calendar ICS url, OpenWeather key and Spotify client id below
+# are intentionally left blank — fill in your own and DON'T commit them.
+
+# Dashboard theme:
+#   "cyberpunk" | "lcars" | "catppuccin" | "monokai" | "mayukai" | "dracula"
+# The THEME button in
+# the header cycles at runtime; that choice is stored in state.json and wins
+# over this value. glitches: the cyberpunk theme's simulated GPU glitch (a
+# brief flicker/tear, one or two per ~20 minutes); false disables it.
+[ui]
+theme = "cyberpunk"
+glitches = true
+
+[display]
+# DRM connector the Xeneon Edge is attached to. Find it with:
+#   for c in /sys/class/drm/card*-*; do \
+#     echo "$(basename $c): $(cat $c/status) $(head -1 $c/modes)"; done
+# The Edge is the connected one reporting 2560x720. Works over any transport:
+#   • USB-C (DisplayPort alt mode) usually shows up as "DP-1"/"DP-2"
+#   • HDMI usually shows up as "HDMI-A-1"
+# Touch always comes over the USB cable regardless of the video connector.
+connector = "HDMI-A-1"
+# Fallback if the connector name doesn't match: substring of the monitor model.
+model_match = "XENEON EDGE"
+# Hide the mouse cursor over the dashboard (it is a touchscreen after all).
+hide_cursor = true
+
+[system]
+# Seconds between stat updates.
+update_interval = 1.0
+# Mount points to show disk usage for.
+disks = ["/", "/home"]
+
+[network]
+# Ping targets. "gateway" is replaced with your default gateway IP.
+ping_targets = ["gateway", "1.1.1.1"]
+# Seconds between pings (per target).
+ping_interval = 2.0
+
+# Calendar agenda (messages page + next-meeting chip in the header).
+# Publish a secret ICS link, e.g. Outlook: Settings -> Calendar -> Shared
+# calendars -> Publish a calendar -> ICS. KEEP THIS URL PRIVATE — anyone with
+# it can read your calendar.
+[calendar]
+ics_url = ""
+refresh_minutes = 5
+lookahead_days = 7
+max_events = 12
+# Hide events whose title contains any of these (case-insensitive),
+# e.g. Outlook's day-long follow-up bars: ignore = ["following:"]
+ignore = []
+
+# Buttons shown on the media panel when nothing is playing.
+[media]
+launcher_label = "SPOTIFY"
+# e.g. "flatpak run com.spotify.Client" or "spotify-launcher"; empty = no button
+launcher_command = "flatpak run com.spotify.Client"
+
+# Live radio streams, played directly on the dashboard (through the default
+# audio output, so the volume slider applies). Use direct stream URLs.
+[[media.stations]]
+label = "DOUBLE J"
+url = "https://abc.streamguys1.com/live/doublejwa/icecast.audio"
+
+# App launcher page (StreamDeck-style touch tiles). `icon` is a file in
+# ui/icons/ (great source: https://selfh.st/icons/).
+# Prefer `desktop` (a .desktop entry id): the app launches with a Wayland
+# activation token so its window comes to the front even if already running.
+# Add `url` to open a link with that app. `command` (any shell command) is
+# the fallback and the way to run terminal macros.
+[[apps.items]]
+label = "Files"
+icon = "files.png"
+command = "xdg-open ~"
+
+[[apps.items]]
+label = "Browser"
+icon = "firefox.png"
+desktop = "firefox.desktop"
+command = "firefox"
+
+[[apps.items]]
+label = "Terminal"
+icon = "terminal.png"
+command = "xterm"
+
+# A terminal-macro example: opens a shell, runs a command, waits for a keypress.
+[[apps.items]]
+label = "SSH Login"
+icon = "terminal.png"
+command = "xterm -e sh -lc 'echo run-your-command-here; read _'"
+
+# World clocks page: local time, weather and public holidays per city.
+# Weather needs a free OpenWeather API key (openweathermap.org). Holidays
+# come from date.nager.at (no key). `region` filters sub-national holidays,
+# e.g. "US-GA" for Georgia. Set home = true on your own city.
+[world]
+openweather_api_key = ""
+
+[[world.cities]]
+name = "Amsterdam"
+country = "NL"
+tz = "Europe/Amsterdam"
+query = "Amsterdam,NL"
+home = true
+
+[[world.cities]]
+name = "New York"
+country = "US"
+region = "US-NY"
+tz = "America/New_York"
+query = "New York,US"
+
+[[world.cities]]
+name = "Tokyo"
+country = "JP"
+tz = "Asia/Tokyo"
+query = "Tokyo,JP"
+
+# Taskwarrior page (needs the `task` CLI). `filter` is any task filter
+# expression; tasks are shown sorted by urgency with tag/project chips.
+[tasks]
+filter = "status:pending"
+refresh_seconds = 30
+
+# Audio visualizer page. Reacts to whatever plays on the default output.
+# mode is the startup mode: "bars" | "scope" | "radial" | "stars" |
+# "wormhole" | "warp" — tap the visualizer to cycle through them.
+[visualizer]
+fps = 30
+bars = 48
+mode = "bars"
+
+# Spotify like button (dash media panel + visualizer page). Create a free
+# app at https://developer.spotify.com/dashboard with redirect URI
+# http://127.0.0.1:8898/callback, then paste its Client ID here and tap
+# LINK SPOTIFY on the dashboard (one-time browser approval).
+[spotify]
+client_id = ""
+
+# Notification sources shown on the messages page. `match` patterns are
+# case-insensitive substrings tested against the notifying app's name,
+# desktop-entry and app id.
+[[notifications.sources]]
+id = "teams"
+label = "TEAMS"
+match = ["teams"]
+
+[[notifications.sources]]
+id = "mattermost"
+label = "MATTERMOST"
+match = ["mattermost"]
+
+# Custom quick-action buttons (uncomment and edit to add your own).
+# Each button runs a shell command when tapped.
+#
+# [[actions.custom]]
+# label = "Files"
+# icon = ""
+# command = "nautilus"
